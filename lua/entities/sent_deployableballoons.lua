@@ -119,7 +119,7 @@ function ENT:TriggerInput(key,value)
 			Wire_TriggerOutput(self, "Deployed", self.Deployed)
 		end
 	elseif (key == "Force") then
-		self.force = math.Clamp(value, -1000000, 1000000)
+		self.force = math.Clamp(value, -100000, 100000)
 		if self.Deployed ~= 0 then
 			self.Balloon:SetForce(value)
 		end
