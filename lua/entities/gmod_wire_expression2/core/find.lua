@@ -438,6 +438,7 @@ end
 
 --- Find all entities with the given class
 e2function number findByClass(string class)
+	if class == "balance_point" then return 0 end
 	if query_blocked(self, 1) then return 0 end
 	return applyFindList(self, ents.FindByClass(class))
 end
