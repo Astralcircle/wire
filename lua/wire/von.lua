@@ -218,7 +218,6 @@ end
         for decoding basic Lua data types.                               ]]
 
 
-
 _deserialize = {
 --	Well, tables are very loose...
 --	The first table doesn't have to begin and end with { and }.
