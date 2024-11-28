@@ -878,7 +878,9 @@ end
 e2function number entity:propGetFriction()
 	if not ValidAction(self, this, "friction") then return 0 end
 	return this:GetFriction()
+end
 
+--Fixed
 
 e2function void entity:propSetElasticity(number elasticity)
 	if not ValidAction(self, this, "elasticity") then return end
