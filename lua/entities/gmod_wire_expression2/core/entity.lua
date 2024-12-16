@@ -119,6 +119,19 @@ e2function entity entity:owner()
 	return getOwner(self, this)
 end
 
+__e2setcost(100)
+
+e2function array entities()
+	local tab = {}
+
+	for k, v in ents.Iterator() do
+		tab[k] = v
+		self.prf = self.prf + 1
+	end
+
+	return tab
+end
+
 __e2setcost(20)
 
 e2function table entity:keyvalues()
