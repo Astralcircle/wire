@@ -141,7 +141,6 @@ function ENT:Think()
 						end
 						Wire_TriggerOutput(self, "X", cx)
 						Wire_TriggerOutput(self, "Y", cy)
-						self:ShowOutput(cx, cy, clickActive, 1)
 					end
 				end
 			end
@@ -150,13 +149,11 @@ function ENT:Think()
 
 	if (onScreen ~= self.lastOnScreen) then
 		Wire_TriggerOutput(self, "OnScreen", onScreen)
-		self:ShowOutput(self.lastX, self.lastY, self.lastClick, onScreen)
 		self.lastOnScreen = onScreen
 	end
 
 	if (clickActive ~= self.lastClick) then
 		Wire_TriggerOutput(self, "Use", clickActive)
-		self:ShowOutput(self.lastX, self.lastY, clickActive, self.lastOnScreen)
 		self.lastClick = clickActive
 	end
 
@@ -165,7 +162,7 @@ function ENT:Think()
 end
 
 function ENT:ShowOutput(cx, cy, activeval, osval)
-	self:SetOverlayText(string.format("X = %f, Y = %f, Use = %d, On Screen = %d\n", cx, cy, activeval, osval))
+	self:SetOverlayText(string.format("X = %f, Y = %f, Use = %d, On Screen = %d\n", self.lastX, self.lastY, self.lastClick, self.lastOnScreen))
 end
 
 function ENT:OnRestore()

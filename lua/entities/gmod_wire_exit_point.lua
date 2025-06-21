@@ -22,8 +22,6 @@ function ENT:Initialize()
 	self.Global = false
 	self.GlobalAngle = false
 	self:AddExitPoint()
-
-	self:ShowOutput()
 end
 
 function ENT:TriggerInput( name, value )
@@ -53,7 +51,6 @@ function ENT:TriggerInput( name, value )
 		self.Angle = value
 		self.GlobalAngle = false
 	end
-	self:ShowOutput()
 end
 
 function ENT:ShowOutput()
@@ -87,7 +84,6 @@ function ENT:Think()
 			end
 		end
 
-		self:ShowOutput()
 		self:SendMarks()
 		self:NextThink(CurTime()+0.1)
 		return true
@@ -151,7 +147,6 @@ function ENT:LinkEnt( ent, dontNotify )
 
 	if not dontNotify then
 		self:SendMarks()
-		self:ShowOutput()
 	end
 	return true
 end
@@ -162,14 +157,12 @@ function ENT:UnlinkEnt( ent )
 	ent:RemoveCallOnRemove("ExitPoint.Unlink")
 
 	self:SendMarks()
-	self:ShowOutput()
 	return true
 end
 
 function ENT:ClearEntities()
 	self.Entities = {}
 	self:SendMarks()
-	self:ShowOutput()
 end
 
 function ENT:BuildDupeInfo()

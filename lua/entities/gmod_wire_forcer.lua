@@ -33,25 +33,20 @@ function ENT:Setup( Force, Length, ShowBeam, Reaction )
 	self.Reaction = Reaction or false
 	if Length then self:SetBeamLength(Length) end
 	if ShowBeam ~= nil then self:SetShowBeam(ShowBeam) end
-	self:ShowOutput()
 end
 
 function ENT:TriggerInput( name, value )
 	if (name == "Force") then
 		self.Force = value
 		self:SetBeamHighlight(value ~= 0)
-		self:ShowOutput()
 	elseif (name == "OffsetForce") then
 		self.OffsetForce = value
 		self:SetBeamHighlight(value ~= 0)
-		self:ShowOutput()
 	elseif (name == "Velocity") then
 		self.Velocity = math.Clamp(value,-100000,100000)
 		self:SetBeamHighlight(value ~= 0)
-		self:ShowOutput()
 	elseif (name == "Length") then
 		self:SetBeamLength(math.Round(value))
-		self:ShowOutput()
 	end
 end
 

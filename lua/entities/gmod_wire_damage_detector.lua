@@ -99,10 +99,9 @@ end
 
 function ENT:Setup( includeconstrained )
 	self.includeconstrained = includeconstrained
-	self:ShowOutput()
 end
 
-function ENT:LinkEnt( ent, dontupdateoutput )
+function ENT:LinkEnt( ent )
 	if not ent or not ent:IsValid() then return end
 
 	if self.linked_entities_lookup[ent] then return false end
@@ -115,7 +114,6 @@ function ENT:LinkEnt( ent, dontupdateoutput )
 		end
 	end )
 
-	if not dontupdateoutput then self:ShowOutput() end
 	WireLib.SendMarks( self, self.linked_entities )
 	return true
 end
@@ -134,7 +132,6 @@ function ENT:UnlinkEnt( ent )
 
 	ent:RemoveCallOnRemove( "DDetector.Unlink" )
 
-	self:ShowOutput()
 	WireLib.SendMarks( self, self.linked_entities )
 	return true
 end
@@ -149,7 +146,6 @@ function ENT:ClearEntities()
 	self.linked_entities = {}
 	self.linked_entities_lookup = {}
 
-	self:ShowOutput()
 	WireLib.SendMarks( self, self.linked_entities )
 	return true
 end
@@ -168,7 +164,6 @@ function ENT:TriggerInput( iname, value )
 				end
 			end
 			self.arrayInputNextChange = CurTime() + 1
-			self:ShowOutput()
 		end
 	elseif iname == "Entity" then
 		if IsValid( value )then
@@ -336,7 +331,6 @@ function ENT:ApplyDupeInfo(ply, ent, info, GetEntByID)
 		end
 	end
 
-	self:ShowOutput()
 	-- wait a while after dupe before sending marks, because the entity doesn't exist clientside yet
 	timer.Simple( 0.1, function() if IsValid( self ) then WireLib.SendMarks( self, self.linked_entities ) end end )
 end

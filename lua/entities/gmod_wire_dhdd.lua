@@ -60,13 +60,12 @@ function ENT:Think()
 	]]
 	if self.WantsUpdate then
 		self.WantsUpdate = nil
-		self:ShowOutputs()
+		WireLib.TriggerOutput( self, "Memory", self.Memory )
+		WireLib.TriggerOutput( self, "Size", self.Size )
 	end
 end
 
-function ENT:ShowOutputs()
-	WireLib.TriggerOutput( self, "Memory", self.Memory )
-	WireLib.TriggerOutput( self, "Size", self.Size )
+function ENT:ShowOutput()
 	if not self.ROM then
 		self:SetOverlayText("DHDD\nSize: " .. self.Size .." bytes" )
 	else
@@ -134,7 +133,9 @@ function ENT:ApplyDupeInfo(ply, ent, info, GetEntByID)
 		if info.DHDD.AllowWrite ~= nil then
 			ent.AllowWrite = info.DHDD.AllowWrite
 		end
-		self:ShowOutputs()
+
+		WireLib.TriggerOutput( self, "Memory", self.Memory )
+		WireLib.TriggerOutput( self, "Size", self.Size )
 	end
 	self.ROM = info.ROM or false
 

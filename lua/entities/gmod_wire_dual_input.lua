@@ -30,7 +30,6 @@ function ENT:Setup(keygroup, keygroup2, toggle, value_off, value_on, value_on2)
 	self.Value = value_off
 	self.Select = 0
 
-	self:ShowOutput(self.value_off)
 	Wire_TriggerOutput(self, "Out", self.value_off)
 end
 
@@ -55,13 +54,10 @@ function ENT:Switch( on, mul )
 	self.Select = mul
 
 	if (on and mul == 1) then
-		self:ShowOutput(self.value_on)
 		self.Value = self.value_on
 	elseif (on and mul == -1) then
-		self:ShowOutput(self.value_on2)
 		self.Value = self.value_on2
 	else
-		self:ShowOutput(self.value_off)
 		self.Value = self.value_off
 	end
 
@@ -70,8 +66,8 @@ function ENT:Switch( on, mul )
 	return true
 end
 
-function ENT:ShowOutput(value)
-	self:SetOverlayText( "(" .. self.value_on2 .. " - " .. self.value_off .. " - " .. self.value_on .. ") = " .. value )
+function ENT:ShowOutput()
+	self:SetOverlayText( "(" .. self.value_on2 .. " - " .. self.value_off .. " - " .. self.value_on .. ") = " .. self.Value )
 end
 
 local function On( pl, ent, mul )

@@ -82,7 +82,7 @@ function ENT:TriggerInput(name,value)
 			self.TargetAngOffset:SetAngles(value)
 		end
 	end
-	self:ShowOutput()
+
 	return true
 end
 

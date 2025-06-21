@@ -154,13 +154,11 @@ function ENT:Switch(on)
 	self:SetOn( on )
 
 	if (on) then
-		self:ShowOutput(self.value_on)
 		self.Value = self.value_on
 
 		local anim = anims[self:GetModel()]
 		if anim then self:SetSequence(anim[1]) end
 	else
-		self:ShowOutput(self.value_off)
 		self.Value = self.value_off
 
 		local anim = anims[self:GetModel()]
@@ -177,8 +175,8 @@ function ENT:Switch(on)
 	return true
 end
 
-function ENT:ShowOutput(value)
-	self:SetOverlayText( "(" .. self.value_off .. " - " .. self.value_on .. ") = " .. value )
+function ENT:ShowOutput()
+	self:SetOverlayText( "(" .. self.value_off .. " - " .. self.value_on .. ") = " .. self.Value )
 end
 
 duplicator.RegisterEntityClass("gmod_wire_button", WireLib.MakeWireEnt, "Data", "toggle", "value_off", "value_on", "description", "entityout" )

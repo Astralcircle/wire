@@ -89,8 +89,6 @@ function ENT:Setup( key, damage, delaytime, removeafter, radius, affectother, no
 	if (self.Radius > 0 ) then self.NormInfo = self.NormInfo.." Rad: "..self.Radius end
 	if (self.Delaytime > 0) then self.NormInfo = self.NormInfo.." Delay: "..self.Delaytime end
 
-	self:ShowOutput()
-
 	local ttable = {
 		key = key,
 		damage = damage,
@@ -126,8 +124,6 @@ function ENT:ResetHealth()
 	if (self.ColorEffect) then self:SetColor(Color(255, 255, 255, 255)) end
 
 	self:SetNoDraw( false )
-
-	self:ShowOutput()
 end
 
 function ENT:OnTakeDamage( dmginfo )
@@ -147,7 +143,7 @@ function ENT:OnTakeDamage( dmginfo )
 		if (h < 0) then h = 0 end
 		self:SetHealth(h)
 		Wire_TriggerOutput(self, "Health", h)
-		self:ShowOutput()
+
 		if (self.ColorEffect) then
 			local c = h == 0 and 0 or 255 * (h / self:GetMaxHealth())
 			self:SetColor(Color(255, c, c, 255))
@@ -182,14 +178,11 @@ function ENT:Think()
 			self.reloading = false
 			if (self.ResetAtExplode) then
 				self:ResetHealth()
-			else
-				self:ShowOutput()
 			end
 		end
 	end
 
 	-- Do count check to ensure that
-	-- ShowOutput() is called every second
 	-- when exploding or reloading
 	if ((self.CountTime or 0) < CurTime()) then
 		local temptime = 0
@@ -201,7 +194,6 @@ function ENT:Think()
 
 		if (temptime > 0) then
 			self.count = math.ceil(temptime - CurTime())
-			self:ShowOutput()
 		end
 
 		self.CountTime = CurTime() + 1
@@ -247,7 +239,6 @@ function ENT:Explode()
 	self.ReloadTime = CurTime() + math.max(wire_explosive_delay:GetFloat(), self.Delayreloadtime)
 	-- Force reset of counter
 	self.CountTime = 0
-	self:ShowOutput()
 end
 
 -- don't foreget to call this when changes happen

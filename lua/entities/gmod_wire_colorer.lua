@@ -95,7 +95,6 @@ function ENT:Initialize()
 	self.Outputs = WireLib.CreateOutputs( self, {"Out"} )
 	self.InColor = Color(255, 255, 255, 255)
 	self:SetBeamLength(2048)
-	self:ShowOutput()
 end
 
 function ENT:Setup(outColor,Range)
@@ -107,7 +106,6 @@ function ENT:Setup(outColor,Range)
 	end
 
 	if Range then self:SetBeamLength(Range) end
-	self:ShowOutput()
 end
 
 function ENT:TriggerInput(iname, value)
@@ -130,19 +128,14 @@ function ENT:TriggerInput(iname, value)
 		end
 	elseif iname == "R" then
 		self.InColor.r = math.Clamp(value, 0, 255)
-		self:ShowOutput()
 	elseif iname == "G" then
 		self.InColor.g = math.Clamp(value, 0, 255)
-		self:ShowOutput()
 	elseif iname == "B" then
 		self.InColor.b = math.Clamp(value, 0, 255)
-		self:ShowOutput()
 	elseif iname == "A" then
 		self.InColor.a = math.Clamp(value, 0, 255)
-		self:ShowOutput()
 	elseif iname == "RGB" then
 		self.InColor = Color( value.x, value.y, value.z, self.InColor.a )
-		self:ShowOutput()
 	end
 end
 

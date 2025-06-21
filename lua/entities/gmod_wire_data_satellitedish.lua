@@ -9,7 +9,6 @@ function ENT:Initialize()
 	self:PhysicsInit( SOLID_VPHYSICS )
 	self:SetMoveType( MOVETYPE_VPHYSICS )
 	self:SetSolid( SOLID_VPHYSICS )
-	self:ShowOutput()
 end
 
 function ENT:LinkEnt( transmitter )
@@ -17,13 +16,11 @@ function ENT:LinkEnt( transmitter )
 		return false, "Satellite Dishes can only be linked to Wire Data Transferers!"
 	end
 	self.Transmitter = transmitter
-	self:ShowOutput()
 	WireLib.SendMarks(self, {transmitter})
 	return true
 end
 function ENT:UnlinkEnt()
 	self.Transmitter = nil
-	self:ShowOutput()
 	WireLib.SendMarks(self, {})
 	return true
 end
@@ -46,5 +43,4 @@ function ENT:ApplyDupeInfo(ply, ent, info, GetEntByID)
 	BaseClass.ApplyDupeInfo(self, ply, ent, info, GetEntByID)
 
 	self.Transmitter = GetEntByID(info.Transmitter)
-	self:ShowOutput()
 end

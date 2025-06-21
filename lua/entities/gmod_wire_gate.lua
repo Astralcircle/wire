@@ -63,7 +63,6 @@ function ENT:Setup(action, noclip)
 	self.Updating = nil
 
 	self:CalcOutput()
-	self:ShowOutput()
 end
 
 
@@ -91,7 +90,6 @@ function ENT:TriggerInput(iname, value, iter)
 	if not action or action.timed then return end
 
 	selfTbl.CalcOutput(self, iter, selfTbl)
-	selfTbl.ShowOutput(self, selfTbl)
 end
 
 function ENT:Think()
@@ -102,7 +100,6 @@ function ENT:Think()
 
 	if action and action.timed then
 		selfTbl.CalcOutput(self, nil, selfTbl)
-		selfTbl.ShowOutput(self, selfTbl)
 		self:NextThink(CurTime() + 0.02)
 
 		return true
@@ -130,8 +127,8 @@ function ENT:CalcOutput(iter, selfTbl)
 	end
 end
 
-function ENT:ShowOutput(selfTbl)
-	selfTbl = selfTbl or self:GetTable()
+function ENT:ShowOutput()
+	local selfTbl = self:GetTable()
 	local action = selfTbl.Action
 	local txt
 

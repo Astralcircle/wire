@@ -25,14 +25,15 @@ if CLIENT then
 		if (ang.y < 0 and not self:GetOut180()) then ang.y = ang.y + 360 end
 		if (ang.r < 0 and not self:GetOut180()) then ang.r = ang.r + 360
 		elseif (ang.r > 180 and self:GetOut180()) then ang.r = ang.r - 360 end
-		self:ShowOutput(ang.p, ang.y, ang.r)
+		self.OutputAngle = ang
 
 		self:NextThink(CurTime()+0.04)
 		return true
 	end
 
 	function ENT:ShowOutput(p, y, r)
-		self:SetOverlayText(string.format("Angles = %.3f, %.3f, %.3f", p, y, r))
+		local ang = self.OutputAngle or angle_zero
+		self:SetOverlayText(string.format("Angles = %.3f, %.3f, %.3f", ang.p, ang.y, ang.r))
 	end
 
 	return  -- No more client
@@ -70,7 +71,6 @@ function ENT:Think()
 	Wire_TriggerOutput(self, "Roll", ang.r)
 	Wire_TriggerOutput(self, "Angle", Angle( ang.p, ang.y, ang.r ))
 	--now handled client side (TAD2020)
-	--self:ShowOutput(ang.p, ang.y, ang.r)
 
 	self:NextThink(CurTime()+0.04)
 	return true

@@ -93,8 +93,6 @@ function ENT:Setup(precision, iradius, skin)
 --	print("Disk tracks: "..self.DiskTracks)
 --	print("Disk sectors total: "..self.DiskSectors)
 --	print("Disk volume "..self.DiskVolume)
-
-	self:ShowOutput()
 end
 
 function ENT:ShowOutput()

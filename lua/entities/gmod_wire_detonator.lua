@@ -18,22 +18,21 @@ end
 function ENT:TriggerInput(iname, value)
 	if iname == "Trigger" then
 		self:ShowOutput( value )
+		self.Trigger = value
+
+		if value > 0 then
+			self:DoDamage()
+		end
 	end
 end
 
 function ENT:Setup(damage)
 	self.damage = damage
-	self:ShowOutput( 0 )
+	self.Trigger = 0
 end
 
-function ENT:ShowOutput( Trigger )
-	if Trigger ~= self.Trigger then
-		self:SetOverlayText( self.damage .. " = " .. Trigger )
-		self.Trigger = Trigger
-		if Trigger > 0 then
-			self:DoDamage()
-		end
-	end
+function ENT:ShowOutput()
+	self:SetOverlayText(self.damage .. " = " .. self.Trigger)
 end
 
 function ENT:DoDamage()
