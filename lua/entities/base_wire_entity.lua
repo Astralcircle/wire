@@ -427,9 +427,10 @@ end
 net.Receive( "wire_overlay_request", function( len, ply )
 	if net.ReadBool() then
 		local ent = net.ReadEntity()
-		if not (ent and ent:IsValid()) then return end
-		local lastUpdate = net.ReadFloat()
+		if not ent or not ent:IsValid() then return end
+		if ent.ShowOutput then ent:ShowOutput() end
 
+		local lastUpdate = net.ReadFloat()
 		local row = {lastUpdate, ent}
 		overlayRequests[ply] = row
 		syncWireOverlay(ply, ent, row)
