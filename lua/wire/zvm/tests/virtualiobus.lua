@@ -4,7 +4,7 @@ function Test.Run(CPU,TestSuite)
 	TestSuite:Deploy(CPU, "MOV PORT0,1 MOV R0,PORT0",  Test.CompileError)
 	local IOBus = TestSuite.CreateVirtualIOBus(4) -- get external IO device of size 4
 	TestSuite.Initialize(CPU, nil, IOBus) -- reinitialize the CPU with the IOBus
-	
+
 	IOBus.InPorts[0] = 24
 	CPU.Clk = 1
 	for i = 0, 16 do

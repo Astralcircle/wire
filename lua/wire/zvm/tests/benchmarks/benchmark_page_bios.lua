@@ -191,7 +191,7 @@ pmem_find_requester_stackless:
 pmem_find_requester_loop_stackless:
 	INC ESI
 	CPUSET 25,[ESI]
-	DEC ESI    
+	DEC ESI
 	JE pmem_stackless_skip_ptable
 	JNZ page_in_ptable_stackless  // if allocated, check it out
 	pmem_find_requester_stackless_page_in_ptable_return:
@@ -479,7 +479,7 @@ DB 0,0 // 128-255 2
 DB 0,0 // 256-383 3
 DB 0,0 // 384-511 4
 DB 0,0 // 512-639 5
-DB 0,0 // 640-767 6 
+DB 0,0 // 640-767 6
 DB 0,0 // 768-895 7
 DB 0,0 // 896-1023 8
 DB 0,0 // 1024-1151 9

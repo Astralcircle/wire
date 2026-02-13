@@ -207,7 +207,7 @@ function ZVMTestSuite.InternalSuccessCallback()
 end
 
 function ZVMTestSuite.InternalErrorCallback(msg)
-	HCOMP.LoadFile = ZVMTestSuite.HCOMPLoadFile 
+	HCOMP.LoadFile = ZVMTestSuite.HCOMPLoadFile
 	HCOMP.Warning = ZVMTestSuite.OldHCOMPWarning
 	if ZVMTestSuite.CompileArgs.ErrorCallback then
 		ZVMTestSuite.CompileArgs.ErrorCallback(msg)
@@ -464,7 +464,7 @@ function ZVMTestSuite.Initialize(VM,Membus,IOBus)
 				LongestStepExecutionTime = 0, -- Longest execution time during VM:Step
 				ExecutionSteps = 0, -- How many execution steps were performed by this VM
 			}
-			
+
 			table.insert(ZVMTestSuite.Benchmarks,VM.ZVMBenchmark)
 			VM.ZVMBenchmark.ProbableOwner = ZVMTestSuite.TestQueue[#ZVMTestSuite.TestQueue] or "Unknown"
 			if not ZVMTestSuite.BenchmarksByTest[VM.ZVMBenchmark.ProbableOwner] then

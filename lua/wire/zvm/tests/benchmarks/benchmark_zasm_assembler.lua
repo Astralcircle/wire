@@ -22,7 +22,7 @@ void main() {
 	assemble(textToAssemble, ASMOutput)
 	timer end
 	port0 = end - start
-} 
+}
 
 void assemble(char asm, float output) {
 	char word = asm
@@ -157,7 +157,7 @@ float isRegister(char* x) {
 		k += registers[k + 1] + 3
 		i++
 	}
-	
+
 	if(i == 20) {
 		return 0
 	} else {
@@ -194,7 +194,7 @@ float isInstruction(char* x) {
 		k += lookup[k + 1] + 4
 		i++
 	}
-	
+
 	if(i == maxItems) {
 		return 0
 	} else {
@@ -225,7 +225,7 @@ DB 1002, 5, "PORT2",0
 DB 1003, 5, "PORT3",0
 
 optable:
-DB 
+DB
 inst_lookup_A,
 inst_lookup_B,
 inst_lookup_C,

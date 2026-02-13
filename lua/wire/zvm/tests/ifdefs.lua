@@ -7,16 +7,16 @@ Test.Files = {
 #ifdef x
 #define z
 #pragma cpuname Test X
-    ALLOC 1
+	ALLOC 1
 #ifdef y
 #ifdef x
 #pragma cpuname Test X and Y
 #endif
-    ALLOC 2
+	ALLOC 2
 #endif
 //not x
-#else 
-    ALLOC 4
+#else
+	ALLOC 4
 #endif
 
 #ifdef y
@@ -27,7 +27,7 @@ ALLOC 8
 #endif
 /*
 #ifdef y
-    ALLOC 8
+	ALLOC 8
 #endif
 */
 //above comment intentional for making sure ifdef handler doesn't skip into the middle of a comment
