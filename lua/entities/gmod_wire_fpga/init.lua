@@ -299,6 +299,7 @@ function ENT:ValidateData(data)
 	--Check that there are no duplicate output names
 	local connections = {} --Make connection table for later use
 	local inputNames = {}
+	local inputTypes = {}
 	local outputNames = {}
 	for nodeId, node in pairs(data.Nodes) do
 		local gate = getGate(node)
@@ -309,11 +310,15 @@ function ENT:ValidateData(data)
 
 		if gate.isInput then
 			if not node.ioName then return "missing input name" end
+			if inputTypes[node.ioName] then
+				if inputTypes[node.ioName] != getOutputType(gate, 1) then return "duplicate input name (" .. node.ioName .. ") with different type " end
+			end
 			if node.ioName == "Trigger" then return "'Trigger' input name is reserved" end
 			inputNames[node.ioName] = true
+			inputTypes[node.ioName] = getOutputType(gate, 1)
 		elseif gate.isOutput then
 			if not node.ioName then return "missing output name" end
-			if outputNames[node.ioName] then return "duplicate output name" end
+			if outputNames[node.ioName] then return "duplicate output name (" .. node.ioName .. ")" end
 			outputNames[node.ioName] = true
 		end
 
