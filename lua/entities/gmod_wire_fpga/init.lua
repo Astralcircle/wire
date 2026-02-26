@@ -669,7 +669,14 @@ function ENT:Think()
 	end
 	self.QueuedNodes = {}
 
-	if #nodesToRun > 0 then self:RunProtected(nodesToRun) end
+	--If we have nodes to run, then run
+	if #nodesToRun > 0 then self:RunProtected(nodesToRun)
+	--If we are executing timed, and we have lazy queued nodes, then we should run despite no nodes having "changed" (inputs might've!)
+	elseif self.ExecuteOnTimed and (SysTime() >= self.LastTimedUpdate + self.ExecutionInterval) and not table.IsEmpty(self.LazyQueuedNodes) then
+		self.LastTimedUpdate = SysTime()
+		self:RunProtected({})
+	end
+
 
 	self:UpdateOverlay(false)
 	return true
