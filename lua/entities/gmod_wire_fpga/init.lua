@@ -311,7 +311,7 @@ function ENT:ValidateData(data)
 		if gate.isInput then
 			if not node.ioName then return "missing input name" end
 			if inputTypes[node.ioName] then
-				if inputTypes[node.ioName] != getOutputType(gate, 1) then return "duplicate input name (" .. node.ioName .. ") with different type " end
+				if inputTypes[node.ioName] != getOutputType(gate, 1) then return "duplicate input name (" .. node.ioName .. ") where type differs" end
 			end
 			if node.ioName == "Trigger" then return "'Trigger' input name is reserved" end
 			inputNames[node.ioName] = true
