@@ -296,9 +296,10 @@ function ENT:ValidateData(data)
 
 	--Check that gates exist
 	--Check if gate is banned
-	--Check that there are no duplicate input names, or duplicate output names
+	--Check that there are no duplicate output names
 	local connections = {} --Make connection table for later use
 	local inputNames = {}
+	local inputTypes = {}
 	local outputNames = {}
 	for nodeId, node in pairs(data.Nodes) do
 		local gate = getGate(node)
@@ -309,12 +310,15 @@ function ENT:ValidateData(data)
 
 		if gate.isInput then
 			if not node.ioName then return "missing input name" end
-			if inputNames[node.ioName] then return "duplicate input name" end
+			if inputTypes[node.ioName] then
+				if inputTypes[node.ioName] != getOutputType(gate, 1) then return "duplicate input name (" .. node.ioName .. ") where type differs" end
+			end
 			if node.ioName == "Trigger" then return "'Trigger' input name is reserved" end
 			inputNames[node.ioName] = true
+			inputTypes[node.ioName] = getOutputType(gate, 1)
 		elseif gate.isOutput then
 			if not node.ioName then return "missing output name" end
-			if outputNames[node.ioName] then return "duplicate output name" end
+			if outputNames[node.ioName] then return "duplicate output name (" .. node.ioName .. ")" end
 			outputNames[node.ioName] = true
 		end
 
@@ -411,9 +415,12 @@ function ENT:CompileData(data)
 		--io
 		if node.type == "fpga" then
 			if gate.isInput then
-				inputIds[node.ioName] = nodeId
-				table.insert(inputs, node.ioName)
-				table.insert(inputTypes, gate.outputtypes[1])
+				if not inputIds[node.ioName] then
+					inputIds[node.ioName] = {}
+					table.insert(inputs, node.ioName)
+					table.insert(inputTypes, gate.outputtypes[1])
+				end
+				table.insert(inputIds[node.ioName], nodeId)
 			end
 			if gate.isOutput then
 				outputIds[node.ioName] = nodeId
@@ -517,9 +524,10 @@ function ENT:Upload(data)
 	--Initialize inputs to default values
 	self.InputValues = {}
 	for k, iname in pairs(self.InputNames) do
-		local inputNodeId = self.InputIds[iname]
 		local value = self.Inputs[iname].Value
-		self.InputValues[inputNodeId] = value
+		for _, inputNodeId in pairs(self.InputIds[iname]) do
+			self.InputValues[inputNodeId] = value
+		end
 	end
 
 	self.Data = data
@@ -602,13 +610,17 @@ function ENT:TriggerInput(iname, value)
 		return
 	end
 
-	local nodeId = self.InputIds[iname]
-	self.InputValues[nodeId] = value
+	local inputNodeIds = self.InputIds[iname]
+	for _, inputNodeId in pairs(inputNodeIds) do
+		self.InputValues[inputNodeId] = value
+	end
 
 	if self.ExecuteOnInputs then
-		self:RunProtected({nodeId})
+		self:RunProtected(inputNodeIds)
 	else
-		self.LazyQueuedNodes[nodeId] = true
+		for _, inputNodeId in pairs(inputNodeIds) do
+			self.LazyQueuedNodes[inputNodeId] = true
+		end
 	end
 end
 
