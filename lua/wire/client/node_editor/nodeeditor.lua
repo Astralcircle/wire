@@ -1301,7 +1301,7 @@ function Editor:PaintGate(nodeId, node, gate)
 			surface.DrawText(node.ioName)
 		-- Constant
 		elseif node.value then
-			local s = tostring(node.value)
+			local s = util.TypeToString(node.value)
 			local tx, ty = surface.GetTextSize(s)
 			surface.SetTextPos(x - tx / 2, y - ty / 2 + size / 1.2)
 			surface.DrawText(s)
@@ -1973,6 +1973,7 @@ function Editor:CopyNodes(nodeIds)
 				nodeCopy.ioName = node.ioName
 			elseif gate.isConstant then
 				nodeCopy.value = node.value
+				nodeCopy.valueAsString = node.valueAsString
 			end
 		elseif node.visual then
 			nodeCopy.visual = node.visual
@@ -2036,6 +2037,7 @@ function Editor:PasteNodes(x, y)
 				nodeCopy.ioName = copyNode.ioName
 			elseif gate.isConstant then
 				nodeCopy.value = copyNode.value
+				nodeCopy.valueAsString = copyNode.valueAsString
 			end
 		elseif copyNode.visual then
 			nodeCopy.visual = copyNode.visual
@@ -2615,6 +2617,7 @@ function Editor:CreateConstantSetWindow()
 	self.ConstantSetNormal:Dock(BOTTOM)
 	self.ConstantSetNormal:SetSize(175, 20)
 	self.ConstantSetNormal:SetMinMax(-10 ^ 100, 10 ^ 100)
+	self.ConstantSetNormal:SetDecimals(6)
 	self.ConstantSetNormal:SetVisible(false)
 	self.ConstantSetString = vgui.Create("DTextEntry", pnl)
 	self.ConstantSetString:Dock(BOTTOM)
@@ -2642,10 +2645,14 @@ function Editor:OpenConstantSetWindow(node, x, y, type)
 	self.ConstantSetNormal.OnEnter = function () end
 	self.ConstantSetString:SetVisible(false)
 	self.ConstantSetString.OnEnter = function () end
+	self.ConstantSetString.OnChange = function () end
 	self.ConstantSetString:SetValue("")
 	self.ConstantSetWindow:SetVisible(true)
 	self.ConstantSetWindow:MakePopup() -- This will move it above the FPGA editor if it is behind it.
 	self.ForceDrawCursor = true
+
+	local invalidColor = Color(255, 0, 50, 255)
+	self.ConstantSetString:SetTextColor(color_black)
 
 	local px, py = self:GetParent():GetPos()
 	self.ConstantSetWindow:SetPos(px + x + 80, py + y + 30)
@@ -2654,48 +2661,56 @@ function Editor:OpenConstantSetWindow(node, x, y, type)
 		self.ConstantSetNormal:SetVisible(true)
 		self.ConstantSetNormal:SetValue(node.value)
 		self.ConstantSetNormal:RequestFocus()
-		local func = function(pnl)
+		self.ConstantSetNormal.OnEnter = function(pnl)
 			node.value = pnl:GetValue()
 			pnl:SetVisible(false)
 			pnl:GetParent():Close()
 		end
-		self.ConstantSetNormal.OnEnter = func
 	elseif type == "STRING" then
 		self.ConstantSetString:SetVisible(true)
 		self.ConstantSetString:SetText(node.value)
 		self.ConstantSetString:RequestFocus()
-		local func = function(pnl)
+		self.ConstantSetString.OnEnter = function(pnl)
 			node.value = pnl:GetValue()
 			pnl:SetVisible(false)
 			pnl:GetParent():Close()
 		end
-		self.ConstantSetString.OnEnter = func
 	elseif type == "VECTOR" then
 		self.ConstantSetString:SetVisible(true)
-		self.ConstantSetString:SetText(node.value.x .. ", " .. node.value.y .. ", " .. node.value.z)
+		self.ConstantSetString:SetText(node.valueAsString or (node.value.x .. ", " .. node.value.y .. ", " .. node.value.z))
 		self.ConstantSetString:RequestFocus()
-		local func = function(pnl)
+		self.ConstantSetString.OnEnter = function(pnl)
 			valid, x, y, z = validateVector(pnl:GetValue())
 			if valid then
 				node.value = Vector(x, y, z)
+				node.valueAsString = pnl:GetValue()
 				pnl:SetVisible(false)
 				pnl:GetParent():Close()
 			end
 		end
-		self.ConstantSetString.OnEnter = func
+		self.ConstantSetString.OnChange = function(pnl)
+			valid, _, _, _ = validateVector(pnl:GetValue())
+			if valid then pnl:SetTextColor(color_black)
+			else pnl:SetTextColor(invalidColor) end
+		end
 	elseif type == "ANGLE" then
 		self.ConstantSetString:SetVisible(true)
-		self.ConstantSetString:SetText(node.value.p .. ", " .. node.value.y .. ", " .. node.value.r)
+		self.ConstantSetString:SetText(node.valueAsString or (node.value.x .. ", " .. node.value.y .. ", " .. node.value.z))
 		self.ConstantSetString:RequestFocus()
-		local func = function(pnl)
+		self.ConstantSetString.OnEnter = function(pnl)
 			valid, p, y, r = validateVector(pnl:GetValue())
 			if valid then
 				node.value = Angle(p, y, r)
+				node.valueAsString = pnl:GetValue()
 				pnl:SetVisible(false)
 				pnl:GetParent():Close()
 			end
 		end
-		self.ConstantSetString.OnEnter = func
+		self.ConstantSetString.OnChange = function(pnl)
+			valid, _, _, _ = validateVector(pnl:GetValue())
+			if valid then pnl:SetTextColor(color_black)
+			else pnl:SetTextColor(invalidColor) end
+		end
 	end
 
 	local inputField = self.ConstantSetString
