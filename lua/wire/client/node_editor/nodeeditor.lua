@@ -452,8 +452,10 @@ function Editor:InitComponents()
 			local action, gate = subtree[index].action, subtree[index].gate
 			local node2 = node:AddNode(gate.name or "No name found :(")
 			node2.name = gate.name
-			node2:SetTooltip(gate.description)
 			node2.action = action
+			if gate.description then
+				node2:SetTooltip(gate.description)
+			end
 			function node2:DoClick()
 				editor.SelectedInMenu = { type = type, gate = self.action }
 			end
