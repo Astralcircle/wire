@@ -2648,9 +2648,8 @@ function Editor:OpenConstantSetWindow(node, x, y, type)
 	self.ConstantSetWindow:MakePopup() -- This will move it above the FPGA editor if it is behind it.
 	self.ForceDrawCursor = true
 
-	local black = Color(0, 0, 0, 255)
 	local invalidColor = Color(255, 0, 50, 255)
-	self.ConstantSetString:SetTextColor(black)
+	self.ConstantSetString:SetTextColor(color_black)
 
 	local px, py = self:GetParent():GetPos()
 	self.ConstantSetWindow:SetPos(px + x + 80, py + y + 30)
@@ -2688,7 +2687,7 @@ function Editor:OpenConstantSetWindow(node, x, y, type)
 		end
 		self.ConstantSetString.OnChange = function(pnl)
 			valid, _, _, _ = validateVector(pnl:GetValue())
-			if valid then pnl:SetTextColor(black)
+			if valid then pnl:SetTextColor(color_black)
 			else pnl:SetTextColor(invalidColor) end
 		end
 	elseif type == "ANGLE" then
@@ -2706,7 +2705,7 @@ function Editor:OpenConstantSetWindow(node, x, y, type)
 		end
 		self.ConstantSetString.OnChange = function(pnl)
 			valid, _, _, _ = validateVector(pnl:GetValue())
-			if valid then pnl:SetTextColor(black)
+			if valid then pnl:SetTextColor(color_black)
 			else pnl:SetTextColor(invalidColor) end
 		end
 	end
