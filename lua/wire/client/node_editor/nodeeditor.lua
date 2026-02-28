@@ -1970,9 +1970,7 @@ function Editor:CopyNodes(nodeIds)
 				nodeCopy.ioName = node.ioName
 			elseif gate.isConstant then
 				nodeCopy.value = node.value
-				if nodeCopy.valueAsString then
-					nodeCopy.valueAsString = node.valueAsString
-				end
+				nodeCopy.valueAsString = node.valueAsString
 			end
 		elseif node.visual then
 			nodeCopy.visual = node.visual
@@ -2036,9 +2034,7 @@ function Editor:PasteNodes(x, y)
 				nodeCopy.ioName = copyNode.ioName
 			elseif gate.isConstant then
 				nodeCopy.value = copyNode.value
-				if nodeCopy.valueAsString then
-					nodeCopy.valueAsString = copyNode.valueAsString
-				end
+				nodeCopy.valueAsString = copyNode.valueAsString
 			end
 		elseif copyNode.visual then
 			nodeCopy.visual = copyNode.visual
