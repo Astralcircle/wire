@@ -20,8 +20,10 @@ hook.Add( "AddToolMenuCategories", "WireCategories", function()
 	end
 end)
 
+list.Set( "ContentCategoryIcons", "Wiremod", "gui/wireicon.png" )
+
 local function WireTab()
-	spawnmenu.AddToolTab( "Wire", "Wire" )
+	spawnmenu.AddToolTab( "Wire", "Wire", "gui/wireicon.png" )
 
 	--start: UGLY HACK, BAD BAD BAD D:
 	local oldspawnmenuAddToolMenuOption = spawnmenu.AddToolMenuOption
