@@ -39,7 +39,7 @@ end
 [nodiscard]
 e2function array entity:weapons()
 	if not IsValid(this) then return {} end
-	if not this:IsPlayer() then return {} end
+	if not this:IsPlayer() and not this:IsNPC() then return {} end
 	return this:GetWeapons()
 end
 

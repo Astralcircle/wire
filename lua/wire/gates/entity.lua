@@ -1218,7 +1218,7 @@ GateActions["entity_weapons"] = {
     timed = true,
     output = function(gate, Ent)
         if not IsValid(Ent) then return {} end
-        if not Ent:IsPlayer() then return {} end
+        if not Ent:IsPlayer() and not Ent:IsNPC() then return {} end
         return Ent:GetWeapons()
     end,
     label = function(Out, Ent)
